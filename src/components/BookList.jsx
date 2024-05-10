@@ -6,7 +6,8 @@ const BookList = () => {
   const [visible, setVisible] = useState(false);
   const [updateModalVisible, setUpdateModalVisible] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
-  const [form] = Form.useForm();
+  const [addForm] = Form.useForm();
+  const [updateForm] = Form.useForm();
   const { books, loading, fetchBooks, searchBook, deleteBook, addBook, updateBook } = useBookManagement();
 
   useEffect(() => {
@@ -39,11 +40,11 @@ const BookList = () => {
 
   const handleOk = async () => {
     try {
-      await form.validateFields();
-      const values = form.getFieldsValue();
+      await addForm.validateFields();
+      const values = addForm.getFieldsValue();
       addBook(values);
       setVisible(false);
-      form.resetFields();
+      addForm.resetFields();
     } catch (error) {
       console.error('Error adding book:', error);
     }
@@ -51,25 +52,26 @@ const BookList = () => {
 
   const handleUpdate = async () => {
     try {
-      await form.validateFields();
-      const values = form.getFieldsValue();
+      await updateForm.validateFields();
+      const values = updateForm.getFieldsValue();
       const id = selectedBook._id;
       updateBook(id, values);
       setUpdateModalVisible(false);
-      form.resetFields();
+      updateForm.resetFields();
     } catch (error) {
       console.error('Error updating book:', error);
     }
   };
 
   const handleCancel = () => {
-    form.resetFields();
+    updateForm.resetFields();
     setVisible(false);
    
   };
 
   const handleCancelUpdate = () => {
-    form.resetFields();
+    updateForm.resetFields();
+    setSelectedBook(null)
     setUpdateModalVisible(false);
   };
 
@@ -98,41 +100,45 @@ const BookList = () => {
         </div>
       </Skeleton>
       {selectedBook && (
-        <Modal
+        <Modal 
+        closeIcon={null} 
           title="Update Book"
           visible={updateModalVisible}
           onOk={handleUpdate}
           onCancel={handleCancelUpdate}
         >
-          <Form form={form} initialValues={selectedBook}>
-            <Form.Item label="Title" name="title" rules={[{ required: true, message: 'Please enter title' }]}>
-              <Input />
-            </Form.Item>
-            <Form.Item label="Author" name="author" rules={[{ required: true, message: 'Please enter author' }]}>
-              <Input />
-            </Form.Item>
-            <Form.Item label="Genre" name="genre" rules={[{ required: true, message: 'Please enter genre' }]}>
-              <Input />
-            </Form.Item>
+          <Form form={updateForm} initialValues={selectedBook}>
+          <Form.Item label="Title" name="title" rules={[{ required: true, message: 'Please enter title' }, { pattern: /^[A-Za-z\s]+$/, message: 'Please enter only letters and spaces' }]}>
+  <Input />
+</Form.Item>
+<Form.Item label="Author" name="author" rules={[{ required: true, message: 'Please enter author' }, { pattern: /^[A-Za-z\s]+$/, message: 'Please enter only letters and spaces' }]}>
+  <Input />
+</Form.Item>
+<Form.Item label="Genre" name="genre" rules={[{ required: true, message: 'Please enter genre' }, { pattern: /^[A-Za-z\s]+$/, message: 'Please enter only letters and spaces' }]}>
+  <Input />
+</Form.Item>
+
           </Form>
         </Modal>
       )}
       <Modal
+      closeIcon={null} 
         title="Add Book"
         visible={visible}
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <Form form={form}>
-          <Form.Item label="Title" name="title" rules={[{ required: true, message: 'Please enter title' }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item label="Author" name="author" rules={[{ required: true, message: 'Please enter author' }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item label="Genre" name="genre" rules={[{ required: true, message: 'Please enter genre' }]}>
-            <Input />
-          </Form.Item>
+        <Form form={addForm}>
+        <Form.Item label="Title" name="title" rules={[{ required: true, message: 'Please enter title' }, { pattern: /^[A-Za-z\s]+$/, message: 'Please enter only letters and spaces' }]}>
+  <Input />
+</Form.Item>
+<Form.Item label="Author" name="author" rules={[{ required: true, message: 'Please enter author' }, { pattern: /^[A-Za-z\s]+$/, message: 'Please enter only letters and spaces' }]}>
+  <Input />
+</Form.Item>
+<Form.Item label="Genre" name="genre" rules={[{ required: true, message: 'Please enter genre' }, { pattern: /^[A-Za-z\s]+$/, message: 'Please enter only letters and spaces' }]}>
+  <Input />
+</Form.Item>
+
         </Form>
       </Modal>
     </div>
