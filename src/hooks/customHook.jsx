@@ -10,7 +10,7 @@ const useBookManagement = () => {
   const fetchBooks = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:8000/books/getBooks")
+      const response = await axios.get("https://assignment-backend-u2j5.onrender.com/books/getBooks")
       setBooks(response.data);
     } catch (error) {
       setError(error);
@@ -21,7 +21,7 @@ const useBookManagement = () => {
 
   const deleteBook = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/books/delete/${id}`);
+      await axios.delete(`https://assignment-backend-u2j5.onrender.com/books/delete/${id}`);
       await fetchBooks();
     } catch (error) {
       console.error('Error deleting book:', error);
@@ -30,7 +30,7 @@ const useBookManagement = () => {
 
   const addBook = async (values) => {
     try {
-      await axios.post(`http://localhost:8000/books/addBooks`, values);
+      await axios.post(`https://assignment-backend-u2j5.onrender.com/books/addBooks`, values);
       await fetchBooks();
     } catch (error) {
       console.error('Error adding book:', error);
@@ -39,7 +39,7 @@ const useBookManagement = () => {
 
   const updateBook = async (id, values) => {
     try {
-        await axios.put(`http://localhost:8000/books/update/${id}`, values);
+        await axios.put(`https://assignment-backend-u2j5.onrender.com/books/update/${id}`, values);
       console.log('Updated book:', values);
       await fetchBooks();
     } catch (error) {
@@ -50,7 +50,7 @@ const useBookManagement = () => {
   const searchBook = async (value) => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:8000/books/searchBook?query=${encodeURIComponent(value)}`);
+      const response = await axios.get(`https://assignment-backend-u2j5.onrender.com/books/searchBook?query=${encodeURIComponent(value)}`);
       setBooks(response.data);
     } catch (error) {
       setError(error);
